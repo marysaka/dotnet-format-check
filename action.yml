@@ -1,13 +1,30 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: '.NET Format Check'
+description: '.NET Format checker for Github Actions'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
-    required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+  folder:
+    description: 'The folder to operate on. Cannot be used with the workspace option.'
+    required: false
+    default: ''
+  workspace:
+    description: 'The solution or project file to operate on. If not specified, it will search the current directory for one.'
+    required: false
+    default: ''
+  dry-run:
+    description: 'Format files, but do not save changes to disk.'
+    required: false
+    default: true
+  verbosity:
+    description: 'Set the verbosity level. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].'
+    required: false
+    default: 'quiet'
+  fail-fast:
+    description: 'Fail the job if the format is invalid.'
+    required: false
+    default: true
+  enable-annotations:
+    description: 'Generate annotation commands when syntax errors are found.'
+    required: false
+    default: true
 runs:
   using: 'node12'
   main: 'dist/index.js'

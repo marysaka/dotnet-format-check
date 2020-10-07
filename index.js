@@ -1,20 +1,19 @@
 const core = require('@actions/core');
-const wait = require('./wait');
-
+const action = require('./action');
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    core.info(`Waiting ${ms} milliseconds ...`);
+    const inputFolder = core.getInput('folder');
+    const inputWorkspace = core.getInput('workspace');
+    const inputDryRun = core.getInput('dry-run');
+    const inputVerbosity = core.getInput('verbosity');
+    const inputFailFast = core.getInput('fail-fast');
+    const enableAnnotations = core.getInput('enable-annotations');
 
-    core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-    await wait(parseInt(ms));
-    core.info((new Date()).toTimeString());
-
-    core.setOutput('time', new Date().toTimeString());
+    await action.execute(inputFolder, inputWorkspace, inputDryRun, inputVerbosity, inputFailFast, enableAnnotations);
   } catch (error) {
-    core.setFailed(error.message);
+    core.setFailed(error);
   }
 }
 
